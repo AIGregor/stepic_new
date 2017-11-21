@@ -34,6 +34,8 @@
 	что нужно унаследоватьс€ от std::exception с ключевым словом public.
 
 	Ќашел не большую подсказку в книге "Exploring C++ 11 Ray Lishner" стр. 453
+	 ак оказалось пришлось потратить врем€ чтобы ее найти, поэтому сохраню ссылку
+	https://books.google.ru/books?id=aMx0AgAAQBAJ&pg=PA453&dq=%22from_string(std:%22&hl=ru&sa=X&ved=0ahUKEwicicvQidDXAhVJOpoKHa_lBvwQ6AEIJjAA#v=onepage&q=%22from_string(std%3A%22&f=false
 */
 
 #include "stdafx.h"
@@ -48,12 +50,14 @@ using namespace std;
 class bad_from_string : std::exception
 {
 public:
+	bad_from_string(const std::string s) {
+	}
+	bad_from_string(const int i) {
+	}
+	bad_from_string(const double s) {
+	}
 	virtual ~bad_from_string()
 	{
-	}
-	virtual const char* what() const
-	{
-
 	}
 };
 
@@ -65,19 +69,18 @@ T from_string(std::string const& s)
 	istringstream inputSS;
 	// копирование входной строки во внутренний буфер потока
 	inputSS.str(s);
+	// ”даление лишних пробелов
+	inputSS >> std::noskipws;
+	
 	T val;
+	char extra;
 
-	while (!inputSS.eof()) {	
-		try {
-			inputSS >> val;
-			cout << val;
-		}
-		catch (bad_from_string const& e) {
-			cerr << e.what() << endl;
-		}
-	}
-	cout << endl;
-	return val;
+	if ( ! (inputSS >> val)) 
+		throw bad_from_string(val);
+	else if (inputSS >> extra)
+		throw bad_from_string(extra);
+	else
+		return val;	
 };
 
 

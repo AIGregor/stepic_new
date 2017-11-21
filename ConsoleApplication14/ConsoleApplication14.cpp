@@ -75,7 +75,6 @@ T from_string(std::string const& s)
 		}
 	}
 	cout << endl;
-
 	return val;
 };
 

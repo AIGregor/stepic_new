@@ -48,7 +48,7 @@
 using namespace std;
 
 // описание класса исключения bad_from_string
-class bad_from_string : std::exception
+class bad_from_string : public std::exception
 {
 public:
 	bad_from_string(const char* s) {

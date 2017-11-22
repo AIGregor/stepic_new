@@ -43,6 +43,7 @@
 #include <exception>
 #include <string>
 #include <iostream>
+#include <utility>
 
 using namespace std;
 
@@ -50,15 +51,14 @@ using namespace std;
 class bad_from_string : std::exception
 {
 public:
-	bad_from_string(const std::string s) {
-	}
-	bad_from_string(const int i) {
-	}
-	bad_from_string(const double s) {
+	bad_from_string(const char* s) {
 	}
 	virtual ~bad_from_string()
 	{
 	}
+	//virtual const char* what() const
+	//{
+	//}
 };
 
 // функция from_string
@@ -76,11 +76,11 @@ T from_string(std::string const& s)
 	char extra;
 
 	if ( ! (inputSS >> val)) 
-		throw bad_from_string(val);
+		throw bad_from_string("error");
 	else if (inputSS >> extra)
-		throw bad_from_string(extra);
+		throw bad_from_string("error");
 	else
-		return val;	
+		return val;
 };
 
 
